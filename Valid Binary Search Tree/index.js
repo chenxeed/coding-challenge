@@ -6,42 +6,29 @@ function Node(value, left, right) {
     }
 }
 
-function checkBST(node) {
-    
-    function recursiveCheckBST (node, minLeft = -Infinity, maxRight = Infinity) {
-        const value = node.value
-        let leftNode
-        let leftValue
-        let leftIsBST = true
-        let rightNode
-        let rightValue
-        let rightIsBST = true
-    
-        // validate left node
-        if (node.left) {
-            leftNode = recursiveCheckBST(node.left, minLeft, value)
-            leftValue = leftNode.value
-            leftIsBST = leftNode.isBST && leftValue <= value && leftValue >= minLeft
-        }
-    
-        // validate right node
-        if (node.right) {
-            rightNode = recursiveCheckBST(node.right, value, maxRight)
-            rightValue = rightNode.value
-            rightIsBST = rightNode.isBST && rightValue >= value && rightValue <= maxRight
-        }
-        // for debugging purpose
-        // console.log(value, minLeft, maxRight, leftValue, rightValue, leftIsBST, rightIsBST)
-    
-        const isBST = leftIsBST && rightIsBST
-    
-        return {
-            value,
-            isBST
-        }
-    }
+function checkBST(node, minLeft = -Infinity, maxRight = Infinity) {
 
-    return recursiveCheckBST(node).isBST
+    const value = node.value
+    let leftIsBST = true
+    let rightIsBST = true
+
+    // validate left node
+    if (node.left) {
+        const leftValue = node.left.value
+        leftIsBST = checkBST(node.left, minLeft, value) && leftValue <= value && leftValue >= minLeft
+    } 
+
+    // validate right node
+    if (node.right) {
+        const rightValue = node.right.value
+        rightIsBST = checkBST(node.right, value, maxRight) && rightValue >= value && rightValue <= maxRight
+    }
+    // for debugging purpose
+    // console.log(value, minLeft, maxRight, leftValue, rightValue, leftIsBST, rightIsBST)
+
+    const isBST = leftIsBST && rightIsBST
+
+    return isBST
 }
 /**
  *                  5
